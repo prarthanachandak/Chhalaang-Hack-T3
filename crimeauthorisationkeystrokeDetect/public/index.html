@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--Main landing page-->
+<html>
+    <head>
+        <title>crimeauthorisationHandType</title>
+        <link rel = "stylesheet" href = "/index.css">
+    </head>
+
+    <style>
+        :root {
+            --bg-color:aqua;
+            --highlight: red;
+            --dim-color: #333533;
+            --text-color: orange;
+            --plex: 'IBM Plex Sans', sans-serif;
+        }
+        
+        html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+        }
+        
+        .main {
+            margin-top: 10%;
+            display: block;
+            text-align: center;
+            align-items: center;
+            cursor: default;
+        }
+        
+        h1 {
+            color: var(--highlight);
+            font-family: var(--plex);
+            font-size: 4em;
+        }
+        
+        .desc {
+            color: var(--text-color);
+            font-family: var(--plex);
+            font-size: .8em;
+            text-wrap: wrap;
+            width: 80%;
+            margin: 0 auto;
+        }
+        
+        #input {
+            background-color: var(--dim-color);
+            width: 100%;
+            border: 2px solid var(--dim-color);
+            border-radius: .1em;
+            outline: none;
+            padding: .36em;
+            line-height: .2em;
+            box-sizing: border-box;
+            width: 75%;
+            height: 50%;
+            display: block;
+            margin: 0 auto;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        
+        #input:focus {
+            border-color: var(--highlight);
+            box-shadow: 0.1em .1em 0 0.1em var(--highlight);
+        }
+        
+        .progress {
+            font-family: var(--plex);
+            background-color: var(--dim-color);
+            color: var(--text-color);
+            width: 10em;
+            margin: 1em auto;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: default;
+        }
+        
+        ::placeholder {
+            opacity: 0.015;
+        }
+        
+        .btns {
+            display: flex;
+            justify-content: center;
+            margin-top: 15%;
+        }
+        
+        .btn {
+            background-color: var(--dim-color);
+            border-color: var(--dim-color);
+            text-decoration: none;
+            border: none;
+            padding: 1em;
+            margin: 0 1%;
+            border-radius: .5em;
+            color: var(--highlight);
+            font-family: var(--plex);
+            cursor: pointer;
+            -webkit-transition: .1s;
+        }
+        
+        .btn:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 0 1em 0 var(--highlight);
+            -webkit-transition: .15s;
+        }
+        
+        .btn:active {
+            background-color: var(--bg-color);
+            -webkit-transition: .25s;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
+    </style>
+
+    <script>
+        console.log("hi")
+import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+
+import * as firebase from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDRIE-PU1zxFCGxdNJ6yQ_CgAge2e0CSlQ",
+    authDomain: "fishtype-3f3cb.firebaseapp.com",
+    projectId: "fishtype-3f3cb",
+    storageBucket: "fishtype-3f3cb.appspot.com",
+    messagingSenderId: "13886084546",
+    appId: "1:13886084546:web:54f372329cd56d7887725b"
+  };
+firebase.initializeApp(firebaseConfig)
+
+
+//CONSTS
+const INPUT_STR = "The Chhalaang hack is very exciting"
+const TRIAL_COUNT = 5
+
+//Connect elements to JS
+const keystrokeInput = document.getElementById("input")
+const buttonFinish = document.getElementById("button_finish")
+const trialLabel = document.getElementById("progress")
+const buttonReset = document.getElementById("button_reset")
+
+
+
+let currentTrial = 1
+
+let saved_data  = []
+let new_data = []
+
+
+//Capture Functions
+let keyRelease = function(e) {
+    let date = Date.now()
+    new_data.push(["RELEASE", currentTrial, e.keyCode, date])
+}
+
+let keyPress = function(e) {
+    if (e.keyCode == 8) {
+        userFail()
+    } else {
+        let date = Date.now()
+        new_data.push(["PRESS", currentTrial, e.keyCode, date])
+    }
+}
+
+
+//User Interaction states
+let finishTrial = function() {
+    if (keystrokeInput.value  == INPUT_STR) {
+        saved_data = saved_data.concat(new_data)
+
+        if (currentTrial == TRIAL_COUNT) {
+            finishSurvey()
+        }
+        else {
+            incrementTrial()
+        }
+        resetTrial()
+
+    } else {
+        userFail()
+    }
+}
+
+let userFail = function() {
+    alert("Error, please try again.")
+    resetTrial()
+}
+
+let resetTrial = function() {
+    keystrokeInput.value = ""
+    new_data = []
+}
+
+let incrementTrial = function() {
+    keystrokeInput.value = ""
+    currentTrial += 1
+    trialLabel.innerText = "Current Trial: " + currentTrial
+}
+
+
+function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+
+// We done... let's upload
+let finishSurvey = async function() {
+    console.log(saved_data)
+
+    var blob = new Blob([JSON.stringify(saved_data)], {type: "application/json"})
+
+    // var storageRef = firebase.storage().ref();
+
+    // var fileRef = storageRef.child("/files/my-file.json")
+    // fileRef.put(blob).then(function(snapshot) {
+    //     console.log('Uploaded a blob!');
+    // });
+
+    const storage = getStorage();
+    const storageRef = ref(storage, create_UUID());
+
+    await uploadBytes(storageRef, blob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+    });
+
+    window.location.href += "redirect";
+}
+
+
+
+//Bridge front end and backend
+keystrokeInput.onkeydown = keyPress
+keystrokeInput.onkeyup = keyRelease
+
+buttonFinish.onclick = finishTrial
+buttonReset.onclick = resetTrial
+    </script>
+
+
+    <body>
+        <div class = "main">
+            <h1>CrimeHandTypeAuthDetect</h1>
+            <div class = "desc">
+                <h2>Please type "Chalaang Hack and Tookitaki is inspiring us a lot"</h2>
+            </div>
+            <input type = "text" placeholder = "Chalaang Hack" id = "input">
+            <p class = "progress" id="progress">Trials Completed: </p>
+        </div>
+
+        <div class = "btns">
+            <button class = "btn" id="button_reset">Clear Trial</button>
+            <button class = "btn" id="button_finish">Finish Trial</button>
+        </div>
+        <script src="app.js" type="module"></script>
+    </body>
+</html>

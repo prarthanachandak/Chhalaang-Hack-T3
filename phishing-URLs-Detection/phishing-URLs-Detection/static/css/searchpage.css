@@ -1,0 +1,125 @@
+input[type=text] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid white;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 12px 70px 12px 40px;
+  background-image: url('https://cdn.icon-icons.com/icons2/2551/PNG/512/search_icon_152764.png');
+  background-repeat: no-repeat;
+  background-size: 22px 22px;
+  background-position: 2% 50%;
+}
+
+body{
+  background: url(../images/back.jpg);
+  background-size: cover;
+  align-items: center;
+}
+
+input[type=button], input[type=submit], input[type=reset]{
+  background-color: #212121;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 16px 35px 16px 35px;
+  text-decoration: none;
+  position: absolute;
+  top: 180%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  border-radius: 10px 10px
+
+}
+
+input[type=submit]:hover {
+  background-color: #161616;
+}
+
+.form{
+  top:41%;
+  left: 50%;
+  transform: translate3d(-50%,-50%, 0);
+  position: fixed;
+}
+
+h2{
+  color: #210108;
+  background-color: #009e7a;
+  padding: 5px 10px 5px 10px;
+}
+
+.phish{
+
+  background-color: #e60000;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding-right: 35px;
+  padding-left: 35px;
+
+  text-decoration: none;
+  margin: 0;
+  position: absolute;
+  top: 180%;
+  left: 50%;
+ 
+  transform: translate(-50%, -50%);
+  border-radius: 10px 10px
+}
+
+.legit{
+
+  background-color: green;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding-right: 35px;
+  padding-left: 35px;
+  text-decoration: none;
+  margin: 0;
+  position: absolute;
+  top: 180%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  border-radius: 10px 10px
+}
+.evu{
+  background-color: grey;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding-right: 35px;
+  padding-left: 35px;
+  text-decoration: none;
+  margin: 0;
+  position: absolute;
+  top: 180%;
+  left: 50%;
+  text-align: center;
+
+  transform: translate(-50%, -50%);
+  border-radius: 10px 10px
+}
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.safe{
+  text-align: center;
+  padding: 20px;
+  background-color: #349c14;
+  color: white;
+}
+
+.warn{
+  position: absolute;
+  top: 550%;
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
